@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('type');
-            $table->enum('status',['pending','approved','rejected'])->default('pending');
+            $table->string('status');
             $table->string('language');
             $table->date('date_of_publication');
             $table->string('sort');

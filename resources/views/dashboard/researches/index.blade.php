@@ -8,20 +8,47 @@
             <div class="card-header pb-0 d-flex justify-content-between align-items-center">
                 <h6>جدول النتاجات البحثية ({{ $researches->total() }})</h6>
 
-                <!-- Button to Create New Research -->
-                <a href="{{ route('dashboard.researches.create') }}" class="btn btn-primary">
-                    إضافة نتاج بحثي جديد
-                </a>
+                <div class="d-flex align-items-center">
+                    <!-- Button to Create New User -->
+                    <a href="{{ route('dashboard.researches.create') }}" class="btn btn-primary me-2">
+                        إضافة نتاج بحثي جديد
+                    </a>
+
+                    <!-- Dropdown for Export Options -->
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="exportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            تصدير
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{{ route('dashboard.researches.exportall', ['format' => 'excel']) }}">
+                                    تصدير كـ Excel
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('dashboard.researches.exportall', ['format' => 'pdf']) }}">
+                                    تصدير كـ PDF
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <!-- Search and Filter Form -->
-            <div class="card-header pb-0">
-                <form action="{{ route('dashboard.researches.index') }}" method="GET" class="row">
+            <div class="card-header pb-3">
+                <form action="{{ route('dashboard.researches.index') }}" method="GET" class="row g-3 align-items-end">
+                    <!-- Search Input -->
                     <div class="col-md-4">
-                        <input type="text" name="search" class="form-control" placeholder="البحث بالعنوان" value="{{ request('search') }}">
+                        <label for="search" class="form-label">البحث بالعنوان</label>
+                        <input type="text" name="search" id="search" class="form-control"
+                            placeholder="أدخل عنوان البحث" value="{{ request('search') }}">
                     </div>
+
+                    <!-- Department Dropdown -->
                     <div class="col-md-3">
-                        <select name="department_id" class="form-control">
+                        <label for="department_id" class="form-label">اختر القسم</label>
+                        <select name="department_id" id="department_id" class="form-select">
                             <option value="">اختر القسم</option>
                             @foreach ($departments as $department)
                                 <option value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
@@ -30,19 +57,36 @@
                             @endforeach
                         </select>
                     </div>
+
+                    <!-- Status Dropdown -->
                     <div class="col-md-3">
-                        <select name="status" class="form-control">
+                        <label for="status" class="form-label">اختر الحالة</label>
+                        <select name="status" id="status" class="form-select">
                             <option value="">اختر الحالة</option>
-                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>معلق</option>
-                            <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>مُعتمد</option>
-                            <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>مرفوض/محذوف</option>
+                            @foreach($statuses as $status)
+                                <option value="{{ $status->value }}" {{ request('status') == $status->value ? 'selected' : '' }}>
+                                    {{ $status->value }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
+
+                    <!-- My Researches Checkbox -->
                     <div class="col-md-2">
+                        <div class="form-check mt-4">
+                            <input type="checkbox" name="my_researches" id="my_researches" class="form-check-input"
+                                {{ request('my_researches') ? 'checked' : '' }}>
+                            <label for="my_researches" class="form-check-label">نتاجاتي البحثية</label>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="col-md-2 mt-4">
                         <button type="submit" class="btn btn-primary w-100">بحث</button>
                     </div>
                 </form>
             </div>
+
 
             <div class="card-body px-0 pt-0 pb-2">
                 <div class="table-responsive p-0">
@@ -82,13 +126,7 @@
                                     <span class="text-secondary text-xs font-weight-bold">{{ $research->type }}</span>
                                 </td>
                                 <td class="align-middle text-center">
-                                    @if ($research->status === 'pending')
-                                        <span class="text-warning text-xs font-weight-bold">معلق</span>
-                                    @elseif ($research->status === 'approved')
-                                        <span class="text-success text-xs font-weight-bold">مٌعتمد</span>
-                                    @elseif ($research->status === 'rejected')
-                                        <span class="text-danger text-xs font-weight-bold">مرفوض/محذوف</span>
-                                    @endif
+                                    <span class="text-primary text-xs font-weight-bold">{{ $research->status }}</span>
                                 </td>
                                 <td class="align-middle text-center">
                                     <span class="text-secondary text-xs font-weight-bold">{{ $research->language }}</span>

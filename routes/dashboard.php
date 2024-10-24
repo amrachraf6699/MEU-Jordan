@@ -37,7 +37,6 @@ Route::group(['prefix' => 'users' , 'as' => 'users.', 'controller' => UsersContr
     Route::put('{user}/edit', 'update')->name('update');
     Route::delete('{user}/delete', 'destroy')->name('destroy');
     Route::get('export', 'export')->name('export');
-    Route::get('exportall', 'exportall')->name('exportall');
 });
 
 //Programs Routes
@@ -60,6 +59,7 @@ Route::group(['prefix' => 'departments' , 'as' => 'departments.', 'controller' =
     Route::get('{department}/edit', 'edit')->name('edit');
     Route::put('{department}/edit', 'update')->name('update');
     Route::delete('{department}/delete', 'destroy')->name('destroy');
+
 });
 
 //Researches Routes
@@ -75,11 +75,13 @@ Route::group(['prefix' => 'researches' , 'as' => 'researches.', 'controller' => 
     Route::put('{research}/edit', 'update')->name('update');
     Route::delete('{research}/delete', 'destroy')->name('destroy');
     Route::get('researches/{research}/export', 'export')->name('export');
+    Route::get('exportall', 'exportall')->name('exportall');
 
 });
 
 //Adopt Options
-Route::group(['prefix' => 'adopt', 'as' => 'adopt.', 'controller' => AdoptResearchController::class], function() {
+Route::group(['prefix' => 'adopt', 'as' => 'adopt.', 'controller' => AdoptResearchController::class], function()
+{
     Route::get('/', 'index')->name('index');
 
     Route::post('statuses', 'store')->name('statuses')->defaults('model', 'status');

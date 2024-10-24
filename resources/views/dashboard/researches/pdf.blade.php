@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تفاصيل البحث</title>
+    <title>تفاصيل النتاج البحثي</title>
     <style>
         body {
             font-family: 'KFGQPC Uthman Taha Naskh', Arial, sans-serif; /* Add fallback fonts */
@@ -30,7 +30,7 @@
         }
 
         .english-text {
-            font-family: Arial, sans-serif; /* Fallback for English text */
+            font-family: Arial, sans-serif;
         }
 
         @page {
@@ -50,7 +50,7 @@
         <img src="{{ public_path('logo2.jpg') }}" alt="Logo">
     </htmlpagefooter>
 
-    <h2>تفاصيل البحث</h2>
+    <h2>تفاصيل النتاج البحثي</h2>
 
     <table>
         <tr>

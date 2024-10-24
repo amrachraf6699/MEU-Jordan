@@ -2,6 +2,7 @@
 @section('title', 'الصفحة الرئيسية')
 @section('content')
 <div class="row">
+    @if(auth()->user()->role == 'admin')
     <div class="col-lg-3 col-sm-6 mb-lg-0 mb-4">
         <a href="{{ route('dashboard.users.index') }}">
             <div class="card">
@@ -73,7 +74,7 @@
               <div class="row">
                 <div class="col-8">
                   <div class="numbers">
-                    <p class="text-sm mb-0 text-capitalize font-weight-bold">عدد الأبحاث</p>
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">عدد النتاجات البحثية</p>
                     <h5 class="font-weight-bolder mb-0">
                       {{ $researches_count }}
                     </h5>
@@ -88,7 +89,58 @@
             </div>
           </div>
       </div>
-  </div>
+    </div>
+    @else
+    <div class="col-lg-3 col-sm-6 mb-lg-0 mb-4">
+        <a href="#">
+            <div class="card">
+            <div class="card-body p-3">
+                <div class="row">
+                <div class="col-8">
+                    <div class="numbers">
+                    <p class="text-sm mb-0 text-capitalize font-weight-bold">نتاجاتي البحثية</p>
+                    <h5 class="font-weight-bolder mb-0">
+                        {{ $my_reserches_count }}
+                    </h5>
+                    </div>
+                </div>
+                <div class="col-4 text-start">
+                    <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                    <i class="bx bx-file-blank text-lg opacity-10" aria-hidden="true"></i>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>
+        </a>
+      </div>
+        @if(auth()->user()->role == 'committee_member')
+
+        <div class="col-lg-3 col-sm-6 mb-lg-0 mb-4">
+            <a href="#">
+                <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                    <div class="col-8">
+                        <div class="numbers">
+                        <p class="text-sm mb-0 text-capitalize font-weight-bold">نتاجات قسمي البحثية</p>
+                        <h5 class="font-weight-bolder mb-0">
+                            {{ $my_department_researches_count }}
+                        </h5>
+                        </div>
+                    </div>
+                    <div class="col-4 text-start">
+                        <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                        <i class="bx bx-file-blank text-lg opacity-10" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+            </a>
+        </div>
+        @endif
+      @endif
 
 
   <div class="col-12 mt-4">

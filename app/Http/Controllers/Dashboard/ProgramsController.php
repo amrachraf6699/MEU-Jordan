@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class ProgramsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
+    
     public function index()
     {
         $programs = Program::withCount('users')->paginate(10);
@@ -46,14 +52,14 @@ class ProgramsController extends Controller
             'name.max' => 'يجب ألا يتجاوز الاسم 255 حرفًا.',
             'name.unique' => 'هذا الاسم مستخدم بالفعل.',
         ]);
-    
+
         $program->update([
             'name' => $request->name,
         ]);
-    
+
         return redirect()->route('dashboard.programs.index')->with('success', 'تم التعديل بنجاح');
     }
-    
+
     public function destroy(Program $program)
     {
         $program->delete();

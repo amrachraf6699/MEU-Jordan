@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 
 class DepartmentsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('admin');
+    }
+
+
     public function index()
     {
         $departments = Department::withCount('users')->paginate(10);

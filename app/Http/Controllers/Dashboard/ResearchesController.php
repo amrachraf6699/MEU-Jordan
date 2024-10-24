@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Exports\ResearchesExport;
 use App\Exports\ResearchExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateResearchRequest;
@@ -51,12 +52,18 @@ class ResearchesController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->has('my_researches')) {
+            $query->where('user_id', auth()->id());
+        }
+
 
         $researches = $query->paginate(10);
 
         $departments = Department::all();
 
-        return view('dashboard.researches.index', compact('researches', 'departments'));
+        $statuses = Status::all();
+
+        return view('dashboard.researches.index', compact('researches', 'departments' , 'statuses'));
     }
 
 
@@ -174,6 +181,53 @@ class ResearchesController extends Controller
         abort(403, "Something Went Wrong");
     }
 
+    public function exportall(Request $request)
+    {
+        $user = auth()->user();
+        $role = $user->role;
+
+        $query = Research::query();
+
+        if ($role == 'user') {
+            $query->where('user_id', $user->id);
+        }
+        elseif ($role == 'committee_member') {
+            $query->whereHas('user', function ($q) use ($user) {
+                $q->where('department_id', $user->department_id);
+            });
+        }
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', "%{$request->search}%");
+        }
+
+        if ($request->filled('department_id')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('department_id', $request->department_id);
+            });
+        }
+
+        if ($request->has('status') && $request->status != '') {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('my_researches')) {
+            $query->where('user_id', auth()->id());
+        }
+
+        $researches = $query->get();
+
+        if($request->format == 'pdf')
+        {
+            return $this->exportAllExcel($researches);
+        }elseif($request->format == 'excel')
+        {
+            return $this->exportAllPDF($researches);
+        }
+
+    }
+
+
 
     public function revoke(Research $research)
     {
@@ -182,5 +236,20 @@ class ResearchesController extends Controller
         $research->update(['status' => 'pending']);
 
         return back()->with('success', 'تم فك الإعتماد بنجاح');
+    }
+
+
+    protected function exportAllPDF($researches)
+    {
+        return Excel::download(new ResearchesExport($researches), 'تصدير النتاجات البحثية.xlsx');
+    }
+
+    protected function exportAllExcel($researches)
+    {
+        $researches->load('user');
+
+        $pdf = PDF::loadView('dashboard.researches.pdfs',compact('researches'));
+
+        return $pdf->download('تصدير النتاجات البحثية.pdf');
     }
 }
