@@ -1,5 +1,5 @@
 @extends('dashboard.layouts.app')
-@section('title', 'تعديل البحث')
+@section('title', 'تعديل النتاج البحثي')
 
 @section('content')
 
@@ -7,7 +7,7 @@
     <div class="col-12">
         <div class="card mb-4">
             <div class="card-header pb-0">
-                <h6>تعديل البحث: {{ $research->title }}</h6>
+                <h6>تعديل النتاج البحثي: {{ $research->title }}</h6>
             </div>
 
             <div class="card-body">
@@ -18,26 +18,56 @@
 
                     <!-- Title -->
                     <div class="form-group">
-                        <label for="title">عنوان البحث</label>
-                        <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $research->title) }}" placeholder="أدخل عنوان البحث" required>
+                        <label for="title">عنوان النتاج البحثي</label>
+                        <input type="text" name="title" id="title" class="form-control" value="{{ old('title', $research->title) }}" placeholder="أدخل عنوان النتاج البحثي" required>
+                        <small class="form-text text-muted">{{ $hints->title ?? '' }}</small>
                         @error('title')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <!-- Type -->
+                    <!-- Type (Dropdown) -->
                     <div class="form-group">
-                        <label for="type">نوع البحث</label>
-                        <input type="text" name="type" id="type" class="form-control" value="{{ old('type', $research->type) }}" placeholder="أدخل نوع البحث" required>
+                        <label for="type">نوع النتاج البحثي</label>
+                        <select name="type" id="type" class="form-control" required>
+                            <option value="">اختر نوع النتاج البحثي</option>
+                            @foreach($types as $type)
+                                <option value="{{ $type->value }}" {{ $research->type == $type->value ? 'selected' : '' }}>{{ $type->value }}</option>
+                            @endforeach
+                        </select>
+                        <small class="form-text text-muted">{{ $hints->type ?? '' }}</small>
                         @error('type')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <!-- Language -->
+                    <!-- Status (Dropdown) -->
                     <div class="form-group">
-                        <label for="language">اللغة</label>
-                        <input type="text" name="language" id="language" class="form-control" value="{{ old('language', $research->language) }}" placeholder="أدخل اللغة" required>
+                        <label for="status">حالة النشر</label>
+                        <select name="status" id="status" class="form-control" required>
+                            <option value="">اختر حالة النشر</option>
+                            @foreach($statuses as $status)
+                                <option value="{{ $status->value }}" {{ old('status', $research->status) == $status->value ? 'selected' : '' }}>{{ $status->value }}</option>
+                            @endforeach
+                        </select>
+                        <small class="form-text text-muted">{{ $hints->status ?? '' }}</small>
+                        @error('status')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+
+
+                    <!-- Language (Dropdown) -->
+                    <div class="form-group">
+                        <label for="language">لغة النشر</label>
+                        <select name="language" id="language" class="form-control" required>
+                            <option value="">اختر لغة النشر</option>
+                            @foreach($languages as $language)
+                                <option value="{{ $language->value }}" {{ old('language', $research->language) == $language->value ? 'selected' : '' }}>{{ $language->value }}</option>
+                            @endforeach
+                        </select>
+                        <small class="form-text text-muted">{{ $hints->language ?? '' }}</small>
                         @error('language')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -47,79 +77,109 @@
                     <div class="form-group">
                         <label for="date_of_publication">تاريخ النشر</label>
                         <input type="date" name="date_of_publication" id="date_of_publication" class="form-control" value="{{ old('date_of_publication', optional($research->date_of_publication)->format('Y-m-d')) }}" required>
+                        <small class="form-text text-muted">{{ $hints->date_of_publication ?? '' }}</small>
                         @error('date_of_publication')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <!-- Sort -->
+                    <!-- Sort (Dropdown) -->
                     <div class="form-group">
                         <label for="sort">ترتيب المباحث</label>
-                        <input type="text" name="sort" id="sort" class="form-control" value="{{ old('sort', $research->sort) }}" placeholder="أدخل ترتيب المباحث" required>
+                        <select name="sort" id="sort" class="form-control" required>
+                            <option value="">اختر ترتيب المباحث</option>
+                            @foreach(['منفرد', 'باحث أول', 'باحث ثاني', 'باحث ثالث', 'أكثر من ثالث'] as $sortOption)
+                                <option value="{{ $sortOption }}" {{ $research->sort == $sortOption ? 'selected' : '' }}>{{ $sortOption }}</option>
+                            @endforeach
+                        </select>
+                        <small class="form-text text-muted">{{ $hints->sort ?? '' }}</small>
                         @error('sort')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <!-- Evidences (File Upload) -->
-                    <div class="form-group">
-                        <label for="evidences">الشواهد</label>
-                        <input type="file" name="evidences" id="evidences" class="form-control">
-                        <small>يمكنك تحميل ملفات جديدة إذا رغبت.</small>
-                        @error('evidences')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <!-- Indexing -->
-                    <div class="form-group">
-                        <label for="indexing">الفهرسة</label>
-                        <input type="text" name="indexing" id="indexing" class="form-control" value="{{ old('indexing', $research->indexing) }}" placeholder="أدخل الفهرسة" required>
-                        @error('indexing')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
 
                     <!-- Sources -->
                     <div class="form-group">
                         <label for="sources">المصادر</label>
                         <input type="text" name="sources" id="sources" class="form-control" value="{{ old('sources', $research->sources) }}" placeholder="أدخل المصادر" required>
+                        <small class="form-text text-muted">{{ $hints->sources ?? '' }}</small>
                         @error('sources')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <!-- Documentation Period Start -->
+
+                   <!-- Indexing (Dropdown) -->
                     <div class="form-group">
-                        <label for="documentaion_period_start">بداية فترة التوثيق</label>
-                        <input type="date" name="documentaion_period_start" id="documentaion_period_start" class="form-control" value="{{ old('documentaion_period_start', optional($research->documentaion_period_start)->format('Y-m-d')) }}" required>
-                        @error('documentaion_period_start')
+                        <label for="indexing">الفهرسة</label>
+                        <select name="indexing[]" id="indexing" class="form-control" required multiple>
+                            @php
+                                // Convert the comma-separated string to an array
+                                $selectedIndexing = old('indexing', explode(',', $research->indexing ?? ''));
+                            @endphp
+                            @foreach($indexings as $index)
+                                <option value="{{ $index->value }}"
+                                    {{ in_array($index->value, $selectedIndexing) ? 'selected' : '' }}>
+                                    {{ $index->value }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <small class="form-text text-muted">{{ $hints->indexing ?? '' }}</small>
+                        @error('indexing')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <!-- Documentation Period End -->
+
+                    <!-- Evidences (File Upload) -->
                     <div class="form-group">
-                        <label for="documentaion_period_end">نهاية فترة التوثيق</label>
-                        <input type="date" name="documentaion_period_end" id="documentaion_period_end" class="form-control" value="{{ old('documentaion_period_end', optional($research->documentaion_period_end)->format('Y-m-d')) }}" required>
-                        @error('documentaion_period_end')
+                        <label for="evidences">تحميل الشواهد</label>
+                        <input type="file" name="evidences" id="evidences" class="form-control">
+                        <small>يمكنك تحميل ملفات جديدة إذا رغبت.</small>
+                        <small class="form-text text-muted">{{ $hints->evidences ?? '' }}</small>
+                        @error('evidences')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
-                    <!-- Academic Year -->
+
+                    <!-- Documentation Period (Dropdown) -->
+                    <div class="form-group">
+                        <label for="documentaion_period">فترة التوثيق</label>
+                        <select name="documentaion_period" id="documentaion_period" class="form-control" required>
+                            <option value="">اختر فترة التوثيق</option>
+                            @foreach($documentaion_periods as $period)
+                                <option value="{{ $period->value }}" {{ old('documentaion_period', $research->documentaion_period) == $period->value ? 'selected' : '' }}>
+                                    {{ $period->value }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <small class="form-text text-muted">{{ $hints->documentaion_period ?? '' }}</small>
+                        @error('documentaion_period')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+
+                    <!-- Academic Year (Dropdown) -->
                     <div class="form-group">
                         <label for="academic_year">السنة الأكاديمية</label>
-                        <input type="text" name="academic_year" id="academic_year" class="form-control" value="{{ old('academic_year', $research->academic_year) }}" placeholder="أدخل السنة الأكاديمية" required>
+                        <select name="academic_year" id="academic_year" class="form-control" required>
+                            <option value="">اختر السنة الأكاديمية</option>
+                            @foreach($academic_years as $year)
+                                <option value="{{ $year->value }}" {{ old('academic_year', $research->academic_year) == $year->value ? 'selected' : '' }}>{{ $year->value }}</option>
+                            @endforeach
+                        </select>
+                        <small class="form-text text-muted">{{ $hints->academic_year ?? '' }}</small>
                         @error('academic_year')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
+
                     <!-- Submit Button -->
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">تحديث البحث</button>
-                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">تحديث النتاج البحثي</button>
                 </form>
             </div>
         </div>

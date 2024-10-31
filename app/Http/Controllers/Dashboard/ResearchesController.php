@@ -9,8 +9,10 @@ use App\Http\Requests\CreateResearchRequest;
 use App\Models\AcademicYear;
 use App\Models\Department;
 use App\Models\DocumentaionPeriod;
+use App\Models\Hint;
 use App\Models\Indexing;
 use App\Models\Language;
+use App\Models\Program;
 use App\Models\Research;
 use App\Models\Status;
 use App\Models\Type;
@@ -48,6 +50,12 @@ class ResearchesController extends Controller
             });
         }
 
+        if($request->filled('program_id')){
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('program_id', $request->program_id);
+            });
+        }
+
         if ($request->has('status') && $request->status != '') {
             $query->where('status', $request->status);
         }
@@ -56,28 +64,33 @@ class ResearchesController extends Controller
             $query->where('user_id', auth()->id());
         }
 
+        if($request->filled('accreditation_status')){
+            $query->where('accreditation_status', $request->accreditation_status);
+        }
+
 
         $researches = $query->paginate(10);
 
         $departments = Department::all();
+        $programs = Program::all();
 
         $statuses = Status::all();
 
-        return view('dashboard.researches.index', compact('researches', 'departments' , 'statuses'));
+        return view('dashboard.researches.index', compact('researches', 'departments' , 'statuses', 'programs'));
     }
 
 
     public function create()
-{
-    $types = Type::all();
-    $statuses = Status::all();
-    $languages = Language::all();
-    $indexings = Indexing::all();
-    $documentaion_periods = DocumentaionPeriod::all();
-    $academic_years = AcademicYear::all();
-
-    return view('dashboard.researches.create', compact('types', 'statuses', 'languages', 'indexings', 'documentaion_periods', 'academic_years'));
-}
+    {
+        $types = Type::all();
+        $statuses = Status::all();
+        $languages = Language::all();
+        $indexings = Indexing::all();
+        $documentaion_periods = DocumentaionPeriod::all();
+        $academic_years = AcademicYear::all();
+        $hints = Hint::first();
+        return view('dashboard.researches.create', compact('types', 'statuses', 'languages', 'indexings', 'documentaion_periods', 'academic_years', 'hints'));
+    }
 
 
     public function store(CreateResearchRequest $request)
@@ -91,10 +104,11 @@ class ResearchesController extends Controller
                 'date_of_publication' => $request->date_of_publication,
                 'sort' => $request->sort,
                 'evidences' => $this->uploadFile($request->file('evidences')),
-                'indexing' => $request->indexing,
+                'indexing' => implode(',', $request->indexing),
                 'sources' => $request->sources,
                 'documentaion_period' => $request->documentaion_period,
                 'academic_year' => $request->academic_year,
+                'status' => $request->status,
             ]
         );
 
@@ -114,11 +128,16 @@ class ResearchesController extends Controller
     {
         $this->authorize('update', $research);
 
-        $research->date_of_publication = Carbon::parse($research->date_of_publication)->format('Y-m-d');
-        $research->documentaion_period_start = Carbon::parse($research->documentaion_period_start)->format('Y-m-d');
-        $research->documentaion_period_end = Carbon::parse($research->documentaion_period_end)->format('Y-m-d');
 
-        return view('dashboard.researches.edit', compact('research'));
+        $types = Type::all();
+        $statuses = Status::all();
+        $languages = Language::all();
+        $indexings = Indexing::all();
+        $documentaion_periods = DocumentaionPeriod::all();
+        $academic_years = AcademicYear::all();
+        $hints = Hint::first();
+
+        return view('dashboard.researches.edit', compact('research', 'types', 'statuses', 'languages', 'indexings', 'documentaion_periods', 'academic_years', 'hints'));
     }
 
     public function update(CreateResearchRequest $request, Research $research)
@@ -129,14 +148,14 @@ class ResearchesController extends Controller
             [
                 'title' => $request->title,
                 'type' => $request->type,
+                'status' => $request->status,
                 'language' => $request->language,
                 'date_of_publication' => $request->date_of_publication,
                 'sort' => $request->sort,
                 'evidences' => $request->hasFile('evidences') ? $this->uploadFile($request->file('evidences')) : $research->evidences,
-                'indexing' => $request->indexing,
+                'indexing' => implode(',', $request->indexing),
                 'sources' => $request->sources,
-                'documentaion_period_start' => $request->documentaion_period_start,
-                'documentaion_period_end' => $request->documentaion_period_end,
+                'documentaion_period' => $request->documentaion_period,
                 'academic_year' => $request->academic_year,
             ]
         );
@@ -148,7 +167,7 @@ class ResearchesController extends Controller
     {
         $this->authorize('approve', $research);
 
-        $research->update(['status' => 'approved']);
+        $research->update(['accreditation_status' => 'معتمد']);
 
         return back()->with('success', 'تم الإعتماد بنجاح');
     }
@@ -207,6 +226,12 @@ class ResearchesController extends Controller
             });
         }
 
+        if($request->filled('program_id')){
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('program_id', $request->program_id);
+            });
+        }
+
         if ($request->has('status') && $request->status != '') {
             $query->where('status', $request->status);
         }
@@ -215,14 +240,18 @@ class ResearchesController extends Controller
             $query->where('user_id', auth()->id());
         }
 
+        if($request->filled('accreditation_status')){
+            $query->where('accreditation_status', $request->accreditation_status);
+        }
+
         $researches = $query->get();
 
         if($request->format == 'pdf')
         {
-            return $this->exportAllExcel($researches);
+            return $this->exportAllPDF($researches);
         }elseif($request->format == 'excel')
         {
-            return $this->exportAllPDF($researches);
+            return $this->exportAllExcel($researches);
         }
 
     }
@@ -233,18 +262,18 @@ class ResearchesController extends Controller
     {
         $this->authorize('revoke', $research);
 
-        $research->update(['status' => 'pending']);
+        $research->update(['accreditation_status' => 'معلق']);
 
         return back()->with('success', 'تم فك الإعتماد بنجاح');
     }
 
 
-    protected function exportAllPDF($researches)
+    protected function exportAllExcel($researches)
     {
         return Excel::download(new ResearchesExport($researches), 'تصدير النتاجات البحثية.xlsx');
     }
 
-    protected function exportAllExcel($researches)
+    protected function exportAllPDF($researches)
     {
         $researches->load('user');
 

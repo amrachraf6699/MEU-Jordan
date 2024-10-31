@@ -66,6 +66,7 @@ class ResearchPolicy
 
     public function revoke(User $user, Research $research): bool
     {
-        return $user->role === 'admin';
+        return $user->role === 'admin' ||
+               ($user->role === 'committee_member' && $user->department_id === $research->user->department_id);
     }
 }

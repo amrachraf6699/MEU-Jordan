@@ -124,7 +124,7 @@
                                 </td>
                                 <td class="align-middle">
                                     <!-- Edit Link -->
-                                    <a href="{{ route('dashboard.users.edit', $user) }}" class="text-info font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                                    <a href="{{ route('dashboard.users.edit', $user->id) }}?page={{ request('page') }}" class="text-info font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                                         تعديل
                                     </a>
 

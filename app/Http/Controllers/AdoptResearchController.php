@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademicYear;
 use App\Models\DocumentaionPeriod;
+use App\Models\Hint;
 use App\Models\Indexing;
 use App\Models\Language;
 use App\Models\Status;
@@ -29,7 +30,9 @@ class AdoptResearchController extends Controller
         $indexings = Indexing::all();
         $documentaion_periods = DocumentaionPeriod::all();
         $academic_years = AcademicYear::all();
-        return view('dashboard.adopt-research.index', compact('types', 'statuses', 'languages', 'indexings', 'documentaion_periods', 'academic_years'));
+        $hints = Hint::first();
+
+        return view('dashboard.adopt-research.index', compact('types', 'statuses', 'languages', 'indexings', 'documentaion_periods', 'academic_years', 'hints'));
     }
 
     public function store(Request $request, $model)
@@ -88,8 +91,44 @@ class AdoptResearchController extends Controller
         return redirect()->back()->with('success', 'تم حذف السجل بنجاح.');
     }
 
+    public function saveHints(Request $request)
+    {
+        $validatedData = $request->validate([
+            'title' => 'nullable|string|max:255',
+            'type' => 'nullable|string|max:255',
+            'status' => 'nullable|string|max:255',
+            'language' => 'nullable|string|max:255',
+            'date_of_publication' => 'nullable|string|max:255',
+            'sort' => 'nullable|string|max:255',
+            'sources' => 'nullable|string|max:255',
+            'indexing' => 'nullable|string|max:255',
+            'evidences' => 'nullable|string|max:255',
+            'documentaion_period' => 'nullable|string|max:255',
+            'academic_year' => 'nullable|string|max:255',
+        ], [
+            'title.max' => 'الحد الأقصى لعنوان النتاج البحثي هو 255 حرف.',
+            'type.max' => 'الحد الأقصى لنوع النتاج البحثي هو 255 حرف.',
+            'status.max' => 'الحد الأقصى لحالة النشر هو 255 حرف.',
+            'language.max' => 'الحد الأقصى للغة النشر هو 255 حرف.',
+            'date_of_publication.max' => 'الحد الأقصى لتاريخ النشر هو 255 حرف.',
+            'sort.max' => 'الحد الأقصى لترتيب المباحث هو 255 حرف.',
+            'sources.max' => 'الحد الأقصى لمصدر النتاج البحثي هو 255 حرف.',
+            'indexing.max' => 'الحد الأقصى للفهرسة هو 255 حرف.',
+            'evidences.max' => 'الحد الأقصى لتحميل الشواهد هو 255 حرف.',
+            'documentaion_period.max' => 'الحد الأقصى لفترة التوثيق هو 255 حرف.',
+            'academic_year.max' => 'الحد الأقصى للعام الأكاديمي هو 255 حرف.',
+        ]);
 
+        $hints = Hint::first();
 
+        if ($hints) {
+            $hints->update($validatedData);
+        } else {
+            Hint::create($validatedData);
+        }
+
+        return redirect()->back()->with('success', 'تم حفظ الحقول بنجاح!');
+    }
 
 
 

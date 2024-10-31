@@ -82,7 +82,8 @@ Route::group(['prefix' => 'researches' , 'as' => 'researches.', 'controller' => 
 //Adopt Options
 Route::group(['prefix' => 'adopt', 'as' => 'adopt.', 'controller' => AdoptResearchController::class], function()
 {
-    Route::get('/', 'index')->name('index');
+    Route::get('', 'index')->name('index');
+    Route::post('', 'saveHints')->name('saveHints');
 
     Route::post('statuses', 'store')->name('statuses')->defaults('model', 'status');
     Route::delete('statuses/{id}', 'delete')->name('deleteStatus')->defaults('model', 'status');

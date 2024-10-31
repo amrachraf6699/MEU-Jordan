@@ -48,25 +48,27 @@
     <table>
         <thead>
             <tr>
+                <th>م</th>
                 <th>الاسم الكامل</th>
                 <th>اسم المستخدم</th>
                 <th>رقم الموظف</th>
                 <th>الدور</th>
                 <th>القسم</th>
                 <th>البرنامج</th>
-                <th>عدد الأبحاث</th>
+                <th>عدد النتاجات البحثية</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($users as $user)
+            @foreach ($users as $index => $user)
                 <tr>
+                    <td>{{ $index + 1 }}</td>
                     <td>{{ $user['full_name'] }}</td>
-                    <td class="english">{{ $user['username'] }}</td> <!-- English text with a different font -->
-                    <td class="english">{{ $user['employee_number'] }}</td> <!-- English text with a different font -->
+                    <td class="english">{{ $user['username'] }}</td>
+                    <td class="english">{{ $user['employee_number'] }}</td>
                     <td>{{ $user['role'] }}</td>
                     <td>{{ $user['department'] }}</td>
                     <td>{{ $user['program'] }}</td>
-                    <td class="english">{{ $user['researches_count'] }}</td> <!-- English text with a different font -->
+                    <td class="english">{{ $user['researches_count'] }}</td>
                 </tr>
             @endforeach
         </tbody>

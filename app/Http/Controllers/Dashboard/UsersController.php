@@ -20,7 +20,7 @@ class UsersController extends Controller
     {
         $this->middleware('admin');
     }
-    
+
     public function index(Request $request)
     {
 
@@ -97,14 +97,21 @@ class UsersController extends Controller
         $departments = Department::all();
         $programs = Program::all();
 
+
         return view('dashboard.users.edit', compact('user', 'departments', 'programs'));
     }
 
     public function update(EditUserRequest $request, User $user)
     {
-        $user->update($request->all());
+        $user->update($request->except(['password' , 'page']));
 
-        return redirect()->route('dashboard.users.index')->with('success', 'تم تحديث بيانات المستخدم بنجاح');
+        if($request->filled('password'))
+        {
+            $user->update(['password' => $request->password]);
+        }
+
+        return redirect()->route('dashboard.users.index', ['page' => request('page')])
+                         ->with('success', 'تم تعديل المستخدم بنجاح');
     }
 
     public function destroy(User $user)

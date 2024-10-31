@@ -3561,22 +3561,22 @@ fieldset:disabled .btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #cb0c9f;
-  border-color: #cb0c9f;
+  background: linear-gradient(310deg, #8e101b 0%, #bd1120 100%);
+  border-color: #630910;
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #ad0a87;
-  border-color: #a20a7f;
+  background: linear-gradient(310deg, #bd1120 0%, #8e101b 100%);
+  border-color: #630910;
 }
 
 .btn-check:focus+.btn-primary,
 .btn-primary:focus {
   color: #fff;
-  background-color: #ad0a87;
-  border-color: #a20a7f;
-  box-shadow: 0 0 0 0.2rem rgba(211, 48, 173, 0.5);
+  border-color: #630910;
+  background: linear-gradient(310deg, #bd1120 0%, #8e101b 100%);
+  box-shadow: 0 0 0 0.2rem #ffffff;
 }
 
 .btn-check:checked+.btn-primary,

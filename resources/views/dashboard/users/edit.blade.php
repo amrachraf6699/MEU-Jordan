@@ -8,7 +8,9 @@
           <form role="form text-left" action="{{ route('dashboard.users.update', $user->id) }}" method="POST">
             @csrf
             @method('PUT')
-            
+
+            <input type="hidden" name="page" value="{{ request('page') }}">
+
             <!-- Full Name -->
             <div class="mb-3">
               <label for="full_name" class="form-label">الاسم الكامل</label>
@@ -17,7 +19,7 @@
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
             </div>
-            
+
             <!-- Employee Number -->
             <div class="mb-3">
                 <label for="employee_number" class="form-label">الرقم الوظيفي</label>
@@ -53,6 +55,7 @@
             <div class="mb-3">
               <label for="department" class="form-label">القسم</label>
               <select name="department_id" class="form-control @error('department_id') is-invalid @enderror" required>
+                <option value="">اختر القسم</option>
                 @foreach ($departments as $department)
                     <option value="{{ $department->id }}" {{ $user->department_id == $department->id ? 'selected' : '' }}>
                         {{ $department->name }}
@@ -66,8 +69,9 @@
 
             <!-- Program -->
             <div class="mb-3">
-                <label for="department" class="form-label">القسم</label>
+                <label for="department" class="form-label">البرنامج</label>
                 <select name="program_id" class="form-control @error('program_id') is-invalid @enderror" required>
+                    <option value="">اختر البرنامج</option>
                   @foreach ($programs as $program)
                       <option value="{{ $program->id }}" {{ $user->program_id == $program->id ? 'selected' : '' }}>
                           {{ $program->name }}

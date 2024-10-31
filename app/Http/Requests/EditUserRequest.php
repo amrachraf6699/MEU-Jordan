@@ -29,7 +29,6 @@ class EditUserRequest extends FormRequest
             'department_id' => 'required|exists:departments,id',
             'program_id' => 'required|exists:programs,id',
             'password' => 'nullable|string|min:8',
-
         ];
     }
 

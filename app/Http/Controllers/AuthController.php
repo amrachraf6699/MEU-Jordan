@@ -66,7 +66,7 @@ class AuthController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            'password' => 'required|confirmed'
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
         $user_id = session()->get('user_reset_id');

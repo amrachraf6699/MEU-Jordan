@@ -19,6 +19,7 @@
                     <div class="form-group">
                         <label for="title">عنوان النتاج البحثي</label>
                         <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}" placeholder="أدخل عنوان النتاج البحثي" required>
+                        <small class="form-text text-muted">{{ $hints->title }}</small>
                         @error('title')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -33,6 +34,7 @@
                                 <option value="{{ $type->value }}" {{ old('type') == $type->value ? 'selected' : '' }}>{{ $type->value }}</option>
                             @endforeach
                         </select>
+                        <small class="form-text text-muted">{{ $hints->type }}</small>
                         @error('type')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -47,6 +49,7 @@
                                 <option value="{{ $status->value }}" {{ old('status') == $status->value ? 'selected' : '' }}>{{ $status->value }}</option>
                             @endforeach
                         </select>
+                        <small class="form-text text-muted">{{ $hints->status }}</small>
                         @error('status')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -61,32 +64,32 @@
                                 <option value="{{ $language->value }}" {{ old('language') == $language->value ? 'selected' : '' }}>{{ $language->value }}</option>
                             @endforeach
                         </select>
+                        <small class="form-text text-muted">{{ $hints->language }}</small>
                         @error('language')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
-                     <!-- Date of Publication -->
-                     <div class="form-group">
+                    <!-- Date of Publication -->
+                    <div class="form-group">
                         <label for="date_of_publication">تاريخ النشر</label>
                         <input type="date" name="date_of_publication" id="date_of_publication" class="form-control" value="{{ old('date_of_publication') }}" required>
+                        <small class="form-text text-muted">{{ $hints->date_of_publication }}</small>
                         @error('date_of_publication')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-
 
                     <!-- Sort (Dropdown) -->
                     <div class="form-group">
                         <label for="sort">ترتيب المباحث</label>
                         <select name="sort" id="sort" class="form-control" required>
                             <option value="">اختر ترتيب المباحث</option>
-                            <option value="منفرد" {{ old('sort') == 'منفرد' ? 'selected' : '' }}>منفرد</option>
-                            <option value="باحث أول" {{ old('sort') == 'باحث أول' ? 'selected' : '' }}>باحث أول</option>
-                            <option value="باحث ثاني" {{ old('sort') == 'باحث ثاني' ? 'selected' : '' }}>باحث ثاني</option>
-                            <option value="باحث ثالث" {{ old('sort') == 'باحث ثالث' ? 'selected' : '' }}>باحث ثالث</option>
-                            <option value="أكثر من ثالث" {{ old('sort') == 'أكثر من ثالث' ? 'selected' : '' }}>أكثر من ثالث</option>
+                            @foreach(['منفرد', 'باحث أول', 'باحث ثاني', 'باحث ثالث', 'أكثر من ثالث'] as $sortOption)
+                                <option value="{{ $sortOption }}" {{ old('sort') == $sortOption ? 'selected' : '' }}>{{ $sortOption }}</option>
+                            @endforeach
                         </select>
+                        <small class="form-text text-muted">{{ $hints->sort }}</small>
                         @error('sort')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -96,21 +99,21 @@
                     <div class="form-group">
                         <label for="sources">مصدر النتاج البحثي</label>
                         <input type="text" name="sources" id="sources" class="form-control" value="{{ old('sources') }}" placeholder="أدخل مصدر النتاج البحثي" required>
+                        <small class="form-text text-muted">{{ $hints->sources }}</small>
                         @error('sources')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
-
                     <!-- Indexing (Dropdown) -->
                     <div class="form-group">
                         <label for="indexing">الفهرسة</label>
-                        <select name="indexing" id="indexing" class="form-control" required>
-                            <option value="">اختر الفهرسة</option>
+                        <select name="indexing[]" id="indexing" class="form-control" required multiple>
                             @foreach($indexings as $indexing)
                                 <option value="{{ $indexing->value }}" {{ old('indexing') == $indexing->value ? 'selected' : '' }}>{{ $indexing->value }}</option>
                             @endforeach
                         </select>
+                        <small class="form-text text-muted">{{ $hints->indexing }}</small>
                         @error('indexing')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -120,11 +123,11 @@
                     <div class="form-group">
                         <label for="evidences">تحميل الشواهد</label>
                         <input type="file" name="evidences" id="evidences" class="form-control" multiple>
+                        <small class="form-text text-muted">{{ $hints->evidences }}</small>
                         @error('evidences')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-
 
                     <!-- Documentation Period (Dropdown) -->
                     <div class="form-group">
@@ -135,7 +138,8 @@
                                 <option value="{{ $period->value }}" {{ old('documentaion_period') == $period->value ? 'selected' : '' }}>{{ $period->value }}</option>
                             @endforeach
                         </select>
-                        @error('documentaion_period_end')
+                        <small class="form-text text-muted">{{ $hints->documentaion_period }}</small>
+                        @error('documentaion_period')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -145,19 +149,18 @@
                         <label for="academic_year">العام الأكاديمي</label>
                         <select name="academic_year" id="academic_year" class="form-control" required>
                             <option value="">اختر العام الأكاديمي</option>
-                            @foreach($academic_years as $year)
-                                <option value="{{ $year->value }}" {{ old('academic_year') == $year->value ? 'selected' : '' }}>{{ $year->value }}</option>
+                            @foreach($academic_years as $academic_year)
+                                <option value="{{ $academic_year->value }}" {{ old('academic_year') == $academic_year->value ? 'selected' : '' }}>{{ $academic_year->value }}</option>
                             @endforeach
                         </select>
+                        <small class="form-text text-muted">{{ $hints->academic_year }}</small>
                         @error('academic_year')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
 
                     <!-- Submit Button -->
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-primary">إضافة النتاج البحثي</button>
-                    </div>
+                    <button type="submit" class="btn btn-primary">إضافة نتاج بحثي جديد</button>
                 </form>
             </div>
         </div>

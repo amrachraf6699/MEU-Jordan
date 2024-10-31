@@ -26,8 +26,7 @@
                 <div class="bg-gray-100 p-4 rounded-lg shadow">
                     <h5 class="font-bold text-lg mb-2">تواريخ مهمة</h5>
                     <p><strong>تاريخ النشر:</strong> {{ $research->date_of_publication->format('Y-m-d') }}</p>
-                    <p><strong>بداية فترة التوثيق:</strong> {{ $research->documentaion_period_start->format('Y-m-d') }}</p>
-                    <p><strong>نهاية فترة التوثيق:</strong> {{ $research->documentaion_period_end->format('Y-m-d') }}</p>
+                    <p><strong> فترة التوثيق:</strong> {{ $research->documentaion_period }}</p>
                 </div>
             </div>
 

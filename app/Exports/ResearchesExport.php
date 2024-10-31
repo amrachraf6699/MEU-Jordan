@@ -38,6 +38,7 @@ class ResearchesExport implements FromCollection, WithHeadings, WithMapping, Wit
             $research->title,
             $research->type,
             $research->status,
+            $research->accreditation_status,
             $research->language,
             $research->date_of_publication->format('Y/m/d'),
             $research->sort,
@@ -46,10 +47,10 @@ class ResearchesExport implements FromCollection, WithHeadings, WithMapping, Wit
             $research->sources,
             $research->documentaion_period,
             $research->academic_year,
-            $research->user->full_name,
-            $research->user->employee_number,
-            $research->user->department->name,
-            $research->user->program->name,
+            $research->user->full_name ?? 'مستخدم محذوف',
+            $research->user->employee_number ?? '-',
+            $research->user->department->name ?? '-',
+            $research->user->program->name ?? '-',
         ];
     }
 
@@ -59,7 +60,8 @@ class ResearchesExport implements FromCollection, WithHeadings, WithMapping, Wit
         return [
             'العنوان',
             'النوع',
-            'الحالة',
+            'حالة النشر',
+            'حالة الإعتماد',
             'اللغة',
             'تاريخ النشر',
             'الترتيب',
@@ -82,7 +84,7 @@ class ResearchesExport implements FromCollection, WithHeadings, WithMapping, Wit
         $sheet->setRightToLeft(true);
 
         // Header styles
-        $sheet->getStyle('A1:O1')->applyFromArray([
+        $sheet->getStyle('A1:P1')->applyFromArray([
             'font' => [
                 'bold' => true,
                 'color' => ['argb' => Color::COLOR_WHITE],
@@ -107,7 +109,7 @@ class ResearchesExport implements FromCollection, WithHeadings, WithMapping, Wit
         $totalRows = $this->researches->count() + 1; // +1 for header row
 
         // Set alignment and borders for all data rows
-        $sheet->getStyle('A1:O' . $totalRows)->applyFromArray([
+        $sheet->getStyle('A1:P' . $totalRows)->applyFromArray([
             'alignment' => [
                 'horizontal' => Alignment::HORIZONTAL_RIGHT,
             ],

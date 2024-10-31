@@ -8,7 +8,9 @@
     <title>تفاصيل النتاج البحثي</title>
     <style>
         body {
-            font-family: 'KFGQPC Uthman Taha Naskh', Arial, sans-serif; /* Add fallback fonts */
+            font-family: 'XBRiyazRegular';
+            font-weight: normal;
+            font-style: normal;
             direction: rtl;
             text-align: right;
         }
@@ -22,20 +24,23 @@
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
-            text-align: right; /* Align text to the right for Arabic */
+            text-align: right; /* Right-align text for Arabic */
         }
 
         th {
             background-color: #f2f2f2;
         }
 
+        /* Style for English text */
         .english-text {
-            font-family: Arial, sans-serif;
+            font-family: Arial, sans-serif; /* English font */
+            direction: ltr; /* Left-to-right for English text */
+            text-align: left; /* Left-align for English text */
         }
 
         @page {
-        header: page-header;
-        footer: page-footer;
+            header: page-header;
+            footer: page-footer;
         }
 
     </style>
@@ -43,37 +48,32 @@
 <body>
 
     <htmlpageheader name="page-header">
-        <img src="{{ public_path('logo.svg') }}" alt="Logo">
+        <img src="{{ public_path('logo.svg') }}" alt="Logo" style="width: 100px; height: auto;">
     </htmlpageheader>
 
     <htmlpagefooter name="page-footer">
-        <img src="{{ public_path('logo2.jpg') }}" alt="Logo">
+        <img src="{{ public_path('logo2.jpg') }}" alt="Logo" style="width: 100px; height: auto;">
     </htmlpagefooter>
 
-    <h2>تفاصيل النتاج البحثي</h2>
+    <h2 style="margin-top: 30px">تفاصيل النتاج البحثي</h2>
+    <h5 style="margin-top: 10px">تم التصدير بواسطة: {{ auth()->user()->full_name }} في {{ now()->format('Y-m-d H:i:s') }}</h5>
 
     <table>
         <tr>
             <th>العنوان</th>
-            <td>{{ $research->title }}</td>
+            <td class="english-text">{{ $research->title }}</td>
         </tr>
         <tr>
             <th>النوع</th>
-            <td>{{ $research->type }}</td>
+            <td class="english-text">{{ $research->type }}</td>
         </tr>
         <tr>
-            <th>الحالة</th>
-            <td>
-                @if($research->status === 'pending')
-                    معلق
-                @elseif($research->status === 'approved')
-                    مُعتمد
-                @elseif($research->status === 'rejected')
-                    محذوف/مرفوض
-                @else
-                    <span class="english-text">{{ $research->status }}</span>
-                @endif
-            </td>
+            <th>حالة النشر</th>
+            <td class="english-text">{{ $research->status }}</td>
+        </tr>
+        <tr>
+            <th>حالة الإعتماد</th>
+            <td class="english-text">{{ $research->accreditation_status }}</td>
         </tr>
         <tr>
             <th>اللغة</th>
@@ -109,11 +109,11 @@
         </tr>
         <tr>
             <th>الاسم الكامل للمستخدم</th>
-            <td class="english-text">{{ $research->user->full_name }}</td>
+            <td class="english-text">{{ $research->user->full_name ?? 'مستخدم محذوف' }}</td>
         </tr>
         <tr>
             <th>اسم المستخدم</th>
-            <td class="english-text">{{ $research->user->username }}</td>
+            <td class="english-text">{{ $research->user->username ?? '-' }}</td>
         </tr>
         <tr>
             <th>تاريخ الإنشاء</th>

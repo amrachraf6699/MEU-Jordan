@@ -24,11 +24,13 @@ class CreateResearchRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'type' => 'required|string|max:255|exists:types,value',
+            'status' => 'required|string|max:255|exists:statuses,value',
             'language' => 'required|string|max:255|exists:languages,value',
-            'date_of_publication' => 'required|date|before:today',
+            'date_of_publication' => 'required|date|beforeor_equal:today',
             'sort' => 'required|string|max:255',
             'evidences' => ($this->isMethod('POST') ? 'required' : 'nullable') . '|file|mimes:pdf,doc,docx|max:2048',
-            'indexing' => 'required|string|max:255|exists:indexings,value',
+            'indexing' => 'array',
+            'indexing.*' => 'required|string|max:255|exists:indexings,value',
             'sources' => 'required|string|max:255',
             'documentaion_period' => 'required|exists:documentaion_periods,value',
             'academic_year' => 'required|string|max:255|exists:academic_years,value',
@@ -74,6 +76,10 @@ class CreateResearchRequest extends FormRequest
             'academic_year.required' => 'يجب إدخال السنة الأكاديمية.',
             'academic_year.string' => 'يجب أن تكون السنة الأكاديمية نصًا.',
             'academic_year.max' => 'يجب ألا تتجاوز السنة الأكاديمية 255 حرفًا.',
+            'status.required' => 'يجب إدخال الحالة.',
+            'status.string' => 'يجب أن تكون الحالة نصًا.',
+            'status.max' => 'يجب ألا تتجاوز الحالة 255 حرفًا.',
+            'status.exists' => 'يجب إدخال حالة صالحة',
         ];
     }
 }

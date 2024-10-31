@@ -23,7 +23,7 @@ class CreateUserRequest extends FormRequest
     {
         return [
             'full_name' => 'required|string|max:255',
-            'username' => 'required|string|alpha_dash|unique:users,username|max:255',
+            'username' => 'required|string|unique:users,username|max:255',
             'employee_number' => 'required|numeric|unique:users,employee_number',
             'role' => 'required|string|in:user,admin,committee_member',
             'department_id' => 'nullable|exists:departments,id',

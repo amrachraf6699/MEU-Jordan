@@ -55,6 +55,8 @@
       </a>
     </div>
     <hr class="horizontal dark mt-0">
+    {{ auth()->user()->full_name . ' (' . auth()->user()->employee_number . ') ' }}
+    <hr class="horizontal dark mt-3">
     <div class="collapse navbar-collapse px-0 w-auto  max-height-vh-100 h-100" id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">

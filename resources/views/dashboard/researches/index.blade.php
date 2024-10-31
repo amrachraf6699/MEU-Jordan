@@ -36,55 +36,86 @@
             </div>
 
             <!-- Search and Filter Form -->
-            <div class="card-header pb-3">
-                <form action="{{ route('dashboard.researches.index') }}" method="GET" class="row g-3 align-items-end">
-                    <!-- Search Input -->
-                    <div class="col-md-4">
-                        <label for="search" class="form-label">البحث بالعنوان</label>
-                        <input type="text" name="search" id="search" class="form-control"
-                            placeholder="أدخل عنوان البحث" value="{{ request('search') }}">
-                    </div>
+            <div class="card" style="max-width: 100%; margin: auto;">
+                <div class="card-body p-2">
+                    <form action="{{ route('dashboard.researches.index') }}" method="GET" class="row g-2 align-items-center">
 
-                    <!-- Department Dropdown -->
-                    <div class="col-md-3">
-                        <label for="department_id" class="form-label">اختر القسم</label>
-                        <select name="department_id" id="department_id" class="form-select">
-                            <option value="">اختر القسم</option>
-                            @foreach ($departments as $department)
-                                <option value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
-                                    {{ $department->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Status Dropdown -->
-                    <div class="col-md-3">
-                        <label for="status" class="form-label">اختر الحالة</label>
-                        <select name="status" id="status" class="form-select">
-                            <option value="">اختر الحالة</option>
-                            @foreach($statuses as $status)
-                                <option value="{{ $status->value }}" {{ request('status') == $status->value ? 'selected' : '' }}>
-                                    {{ $status->value }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- My Researches Checkbox -->
-                    <div class="col-md-2">
-                        <div class="form-check mt-4">
-                            <input type="checkbox" name="my_researches" id="my_researches" class="form-check-input"
-                                {{ request('my_researches') ? 'checked' : '' }}>
-                            <label for="my_researches" class="form-check-label">نتاجاتي البحثية</label>
+                        <!-- Search Input -->
+                        <div class="col-auto">
+                            <label for="search" class="form-label small mb-0">البحث بالعنوان</label>
+                            <input type="text" name="search" id="search" class="form-control form-control-sm" placeholder="أدخل عنوان البحث" value="{{ request('search') }}">
                         </div>
-                    </div>
 
-                    <!-- Submit Button -->
-                    <div class="col-md-2 mt-4">
-                        <button type="submit" class="btn btn-primary w-100">بحث</button>
-                    </div>
-                </form>
+                        @if(auth()->user()->role == 'admin')
+                        <!-- Department Dropdown -->
+                        <div class="col-auto">
+                            <label for="department_id" class="form-label small mb-0">اختر القسم</label>
+                            <select name="department_id" id="department_id" class="form-select form-select-sm">
+                                <option value="">اختر القسم</option>
+                                @foreach ($departments as $department)
+                                    <option value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
+                                        {{ $department->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @endif
+
+                        @if(auth()->user()->role == 'admin' || auth()->user()->role == 'committee_member')
+                        <!-- Department Dropdown -->
+                        <div class="col-auto">
+                            <label for="program_id" class="form-label small mb-0">اختر البرنامج</label>
+                            <select name="program_id" id="program_id" class="form-select form-select-sm">
+                                <option value="">اختر البرنامج</option>
+                                @foreach ($programs as $program)
+                                    <option value="{{ $program->id }}" {{ request('program_id') == $program->id ? 'selected' : '' }}>
+                                        {{ $program->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        @endif
+
+                        <!-- Status Dropdown -->
+                        <div class="col-auto">
+                            <label for="status" class="form-label small mb-0">اختر حالة النشر</label>
+                            <select name="status" id="status" class="form-select form-select-sm">
+                                <option value="">اختر حالة النشر</option>
+                                @foreach($statuses as $status)
+                                    <option value="{{ $status->value }}" {{ request('status') == $status->value ? 'selected' : '' }}>
+                                        {{ $status->value }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Accreditation Status Dropdown -->
+                        <div class="col-auto">
+                            <label for="accreditation_status" class="form-label small mb-0">اختر حالة الإعتماد</label>
+                            <select name="accreditation_status" id="accreditation_status" class="form-select form-select-sm">
+                                <option value="">اختر حالة الإعتماد</option>
+                                <option value="معلق" {{ request('accreditation_status') == 'معلق' ? 'selected' : '' }}>معلق</option>
+                                <option value="معتمد" {{ request('accreditation_status') == 'معتمد' ? 'selected' : '' }}>معتمد</option>
+                            </select>
+                        </div>
+
+                        @if(auth()->user()->role == 'admin' || auth()->user()->role == 'committee_member')
+                        <!-- My Researches Checkbox -->
+                        <div class="col-auto">
+                            <div class="form-check form-check-inline mt-4">
+                                <input type="checkbox" name="my_researches" id="my_researches" class="form-check-input" {{ request('my_researches') ? 'checked' : '' }}>
+                                <label for="my_researches" class="form-check-label small">نتاجاتي البحثية</label>
+                            </div>
+                        </div>
+                        @endif
+
+                        <!-- Submit Button -->
+                        <div class="col-auto mt-5">
+                            <button type="submit" class="btn btn-primary btn-sm">بحث</button>
+                        </div>
+
+                    </form>
+                </div>
             </div>
 
 
@@ -119,14 +150,18 @@
                                 </td>
                                 @if(auth()->user()->role == 'admin' || auth()->user()->role == 'committee_member')
                                 <td class="align-middle text-center">
-                                    <span class="text-secondary text-xs font-weight-bold">{{ $research->user->full_name }}</span>
+                                    @if($research->user)
+                                    <span class="text-secondary text-xs font-weight-bold">{{ $research->user->full_name}}</span>
+                                    @else
+                                    <span class="text-danger text-xs font-weight-bold">مستخدم محذوف</span>
+                                    @endif
                                 </td>
                                 @endif
                                 <td class="align-middle text-center">
                                     <span class="text-secondary text-xs font-weight-bold">{{ $research->type }}</span>
                                 </td>
                                 <td class="align-middle text-center">
-                                    <span class="text-primary text-xs font-weight-bold">{{ $research->status }}</span>
+                                    <span class="text-primary text-xs font-weight-bold">{{ $research->status }}/{{ $research->accreditation_status }}</span>
                                 </td>
                                 <td class="align-middle text-center">
                                     <span class="text-secondary text-xs font-weight-bold">{{ $research->language }}</span>
@@ -137,46 +172,48 @@
                                 <td class="align-middle text-center">
                                     <span class="text-secondary text-xs font-weight-bold">{{ $research->indexing }}</span>
                                 </td>
+                                <td class="align-middle text-center">
+                                    <span class="text-secondary text-xs font-weight-bold">{{ $research->date_of_publication->format('Y-m-d') }}</span>
+                                </td>
                                 <td class="align-middle">
-                                        @if($research->status === 'pending')
-                                            <!-- Edit Link -->
-                                            <a href="{{ route('dashboard.researches.edit', $research) }}" class="text-info font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                                                تعديل
-                                            </a>
+                                        @if($research->accreditation_status !== 'معتمد')
+                                            @if(auth()->id() == $research->user_id || auth()->user()->role == 'admin')
 
-                                            <!-- Separator -->
-                                            |
-
-                                            <!-- Delete Form -->
-                                            <form action="{{ route('dashboard.researches.destroy', $research->id) }}" method="POST" style="display:inline;" id="delete-form-{{ $research->id }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <a href="javascript:;" class="text-danger font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Delete user" onclick="confirmDelete({{ $research->id }})">
-                                                    حذف
+                                                <!-- Edit Link -->
+                                                <a href="{{ route('dashboard.researches.edit', $research) }}" class="text-info font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                                                    تعديل
                                                 </a>
-                                            </form>
+
+                                                <!-- Separator -->
+                                                |
+
+                                                <!-- Delete Form -->
+                                                <form action="{{ route('dashboard.researches.destroy', $research->id) }}" method="POST" style="display:inline;" id="delete-form-{{ $research->id }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <a href="javascript:;" class="text-danger font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Delete user" onclick="confirmDelete({{ $research->id }})">
+                                                        حذف
+                                                    </a>
+                                                </form>
+
+                                                <!-- Separator -->
+                                                |
+
+                                                <!-- Approve Link -->
+                                                <a href="{{ route('dashboard.researches.approve', $research) }}" class="text-success font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Approve user">
+                                                    إعتماد
+                                                </a>
+
 
                                             <!-- Separator -->
                                             |
 
-                                            <!-- Approve Link -->
-                                            <a href="{{ route('dashboard.researches.approve', $research) }}" class="text-success font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Approve user">
-                                                إعتماد
-                                            </a>
+                                            @endif
 
-                                            <!-- Separator -->
-                                            |
 
                                             <!-- Show Link -->
                                             <a href="{{ route('dashboard.researches.show', $research) }}" class="text-info font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                                                 عرض
-                                            </a>
-
-                                            <!-- Separator -->
-                                            |
-
-                                            <a href="{{ route('dashboard.researches.export', ['research' => $research->id, 'type' => 'excel']) }}" class="text-success font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Export to Excel">
-                                                Excel
                                             </a>
 
                                             |
@@ -185,7 +222,7 @@
                                                 PDF
                                             </a>
                                         @else
-                                            @if(auth()->user()->role == 'admin')
+                                            @if(auth()->user()->role == 'admin' || auth()->user()->role == 'committee_member')
                                             <a href="{{ route('dashboard.researches.revoke', $research) }}" class="text-primary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                                                 فك الإعتماد
                                             </a>
@@ -196,13 +233,6 @@
                                                 عرض
                                             </a>
 
-                                            <!-- Separator -->
-                                            |
-
-                                            <!-- Export to Excel Link with Icon -->
-                                            <a href="{{ route('dashboard.researches.export', ['research' => $research->id, 'type' => 'excel']) }}" class="text-success font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Export to Excel">
-                                                Excel
-                                            </a>
 
                                             |
                                             <!-- Export to PDF Link with Icon -->

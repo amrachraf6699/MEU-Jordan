@@ -25,7 +25,8 @@ return new class extends Migration
             $table->string('sources');
             $table->string('documentaion_period');
             $table->string('academic_year');
-            $table->foreignIdFor(User::class)->constrained();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users')->nullOnDelete();
             $table->timestamps();
         });
     }
