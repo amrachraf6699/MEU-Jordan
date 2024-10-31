@@ -51,6 +51,7 @@
                                         ({{ \Carbon\Carbon::parse($activity->created_at)->locale('ar')->translatedFormat('l Y-m-d H:i:s') }})
                                     </small>
                                 </div>
+                                
                                 <div class="activity-user">
                                     <small class="mb-1">{{ $activity->user->full_name }}</small>
                                 </div>

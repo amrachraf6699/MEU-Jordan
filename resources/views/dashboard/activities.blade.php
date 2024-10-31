@@ -33,7 +33,7 @@
 
             <!-- Pagination Links -->
             <div class="card-footer text-center">
-                {{ $activities->links() }} <!-- Laravel pagination links -->
+                {{ $activities->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </div>

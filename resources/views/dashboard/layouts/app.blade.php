@@ -130,9 +130,19 @@
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center ms-2 d-flex align-items-center justify-content-center">
               <i class='bx bxs-id-card' style="font-size: 12px; color: {{ request()->routeIs('dashboard.activities') ? '#fff' : '#67748e' }};"></i>
             </div>
-            <span class="nav-link-text me-1">النشاطات</span>
+            <span class="nav-link-text me-1">نشاطاتي</span>
           </a>
         </li>
+        @if(auth()->user()->role == 'admin')
+        <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('dashboard.users-activities') ? 'active' : '' }}" href="{{ request()->routeIs('dashboard.users-activities') ? '#' : route('dashboard.users-activities') }}">
+              <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center ms-2 d-flex align-items-center justify-content-center">
+                <i class='bx bxs-id-card' style="font-size: 12px; color: {{ request()->routeIs('dashboard.users-activities') ? '#fff' : '#67748e' }};"></i>
+              </div>
+              <span class="nav-link-text me-1">نشاطات المستخدمين</span>
+            </a>
+        </li>
+        @endif
         <li class="nav-item">
           <a class="nav-link" href="{{ route('dashboard.logout') }}">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center ms-2 d-flex align-items-center justify-content-center">
