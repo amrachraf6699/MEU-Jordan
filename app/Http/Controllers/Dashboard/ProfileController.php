@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompleteProfileRequest;
 use App\Http\Requests\CreateUserRequest;
+use App\Models\User;
+use App\Models\UserActivity;
 use Illuminate\Http\Request;
 
 class ProfileController extends Controller
@@ -63,5 +65,29 @@ class ProfileController extends Controller
         $activities = auth()->user()->activities()->paginate(10);
 
         return view('dashboard.activities' , compact('activities'));
+    }
+
+    public function usersActivities(Request $request)
+    {
+        $this->middleware('admin');
+
+        $query = UserActivity::query();
+
+        if($request->has('user_id') && $request->user_id != null)
+        {
+            $query->where('user_id' , $request->user_id);
+        }
+
+        if($request->filled('from_date') && $request->filled('to_date'))
+        {
+            $query->whereBetween('created_at' , [$request->from_date , $request->to_date]);
+        }
+
+        $activities = $query->paginate(10);
+
+
+        $users = User::all();
+
+        return view('dashboard.users-activities' , compact('activities' , 'users'));
     }
 }

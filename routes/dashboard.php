@@ -104,6 +104,8 @@ Route::group(['prefix' => 'adopt', 'as' => 'adopt.', 'controller' => AdoptResear
     Route::delete('academic_years/{id}', 'delete')->name('deleteAcademicYear')->defaults('model', 'AcademicYear');
 });
 
+Route::get('users-activities' , [ProfileController::class , 'usersActivities'])->name('users-activities');
+
 
 
 

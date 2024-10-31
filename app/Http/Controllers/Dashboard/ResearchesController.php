@@ -112,6 +112,8 @@ class ResearchesController extends Controller
             ]
         );
 
+        $this->MakeActivity('قام بإضافتة نتاج بحثي جديد', $request);
+
         return redirect()->route('dashboard.home')->with('success', 'تمت الإضافة بنجاح');
     }
 
@@ -160,6 +162,8 @@ class ResearchesController extends Controller
             ]
         );
 
+        $this->MakeActivity("قام بتعديل نتاج بحثي بعنوان {$research->title}", $request);
+
         return redirect()->route('dashboard.home')->with('success', 'تم التعديل بنجاح');
     }
 
@@ -169,12 +173,17 @@ class ResearchesController extends Controller
 
         $research->update(['accreditation_status' => 'معتمد']);
 
+
+        $this->MakeActivity("قام بإعتماد نتاج بحثي بعنوان {$research->title}", request());
+
         return back()->with('success', 'تم الإعتماد بنجاح');
     }
 
     public function destroy(Research $research)
     {
         $this->authorize('delete', $research);
+
+        $this->MakeActivity("قام بحذف نتاج بحثي بعنوان {$research->title}", request());
 
         $research->delete();
 
@@ -184,6 +193,11 @@ class ResearchesController extends Controller
     public function export(Research $research, Request $request)
     {
         $research->load('user');
+
+        $this->authorize('view', $research);
+
+
+        $this->MakeActivity("قام بتصدير نتاج بحثي بعنوان {$research->title}", request());
 
         if($request->type == 'excel')
         {
@@ -204,6 +218,8 @@ class ResearchesController extends Controller
     {
         $user = auth()->user();
         $role = $user->role;
+
+        $this->MakeActivity('قام بتصدير جميع النتاجات البحثية', $request);
 
         $query = Research::query();
 
@@ -263,6 +279,8 @@ class ResearchesController extends Controller
         $this->authorize('revoke', $research);
 
         $research->update(['accreditation_status' => 'معلق']);
+
+        $this->MakeActivity("قام بفك الإعتماد عن نتاج بحثي بعنوان {$research->title}", request());
 
         return back()->with('success', 'تم فك الإعتماد بنجاح');
     }

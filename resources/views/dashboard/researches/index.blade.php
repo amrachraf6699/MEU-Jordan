@@ -222,7 +222,7 @@
                                                 PDF
                                             </a>
                                         @else
-                                            @if(auth()->user()->role == 'admin' || auth()->user()->role == 'committee_member')
+                                            @if(auth()->user()->role == 'admin' || auth()->user()->role == 'committee_member' && auth()->id() != $research->user_id)
                                             <a href="{{ route('dashboard.researches.revoke', $research) }}" class="text-primary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                                                 فك الإعتماد
                                             </a>
