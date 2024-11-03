@@ -123,6 +123,14 @@
             <th>تاريخ التحديث</th>
             <td class="english-text">{{ $research->updated_at->format('Y-m-d H:i:s') }}</td>
         </tr>
+        <tr>
+            <th>رابط المنشور البحثي</th>
+            <td class="english-text"><a href="{{ $research->publication_link }}" target="_blank">{{ $research->publication_link }}</a></td>
+        </tr>
+        <tr>
+            <th>الأولويات البحثية</th>
+            <td class="english-text">{{ $research->priority }}</td>
+        </tr>
     </table>
 
 </body>

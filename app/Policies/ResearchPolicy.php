@@ -69,4 +69,9 @@ class ResearchPolicy
         return $user->role === 'admin' ||
                ($user->role === 'committee_member' && $user->department_id === $research->user->department_id);
     }
+
+    public function assign(User $user, Research $research): bool
+    {
+        return $user->role === 'admin';
+    }
 }

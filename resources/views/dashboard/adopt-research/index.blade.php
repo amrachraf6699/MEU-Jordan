@@ -12,14 +12,17 @@
     <div class="col-md-4 mb-2">
         <button onclick="showModel('languages')" class="btn btn-primary w-100">لغات النشر</button>
     </div>
-    <div class="col-md-4 mb-2">
+    <div class="col-md-3 mb-2">
         <button onclick="showModel('indexings')" class="btn btn-primary w-100">الفهرسة</button>
     </div>
-    <div class="col-md-4 mb-2">
+    <div class="col-md-3 mb-2">
         <button onclick="showModel('documentaion_periods')" class="btn btn-primary w-100">فترات التوثيق</button>
     </div>
-    <div class="col-md-4 mb-2">
+    <div class="col-md-3 mb-2">
         <button onclick="showModel('academic_years')" class="btn btn-primary w-100">السنوات الأكاديمية</button>
+    </div>
+    <div class="col-md-3 mb-2">
+        <button onclick="showModel('priorities')" class="btn btn-primary w-100">الأولويات البحثية</button>
     </div>
 </div>
 
@@ -94,6 +97,17 @@
         ])
     </div>
 
+    <!-- Priorities -->
+    <div id="priorities" class="model-section" style="display: none;">
+        @include('dashboard.adopt-research.table-form', [
+            'title' => 'الأولويات البحثية',
+            'items' => $priorities,
+            'column_name' => 'الأولوية البحثية',
+            'delete_route' => 'dashboard.adopt.deletePriority',
+            'create_route' => 'dashboard.adopt.priorities'
+        ])
+    </div>
+
     <hr>
     <h3 class="text-center mb-4">وصف الحقول</h3>
     <form action="" method="POST" class="mb-4">
@@ -152,6 +166,16 @@
             <div class="col-md-6 mb-4">
                 <label for="academic_year">العام الأكاديمي:</label>
                 <input type="text" id="academic_year" name="academic_year" class="form-control" value="{{ $hints->academic_year ?? '' }}" >
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <label for="priority">الأولويات البحثية:</label>
+                <input type="text" id="priority" name="priority" class="form-control" value="{{ $hints->priority ?? '' }}" >
+            </div>
+
+            <div class="col-md-6 mb-4">
+                <label for="publication_link">رابط المنشور البحثي:</label>
+                <input type="text" id="publication_link" name="publication_link" class="form-control" value="{{ $hints->publication_link ?? '' }}" >
             </div>
 
             <div class="col-md-12 mb-2">

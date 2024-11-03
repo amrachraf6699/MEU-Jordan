@@ -23,4 +23,9 @@ class Research extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function revokedBy()
+    {
+        return $this->belongsTo(User::class, 'revoked_by');
+    }
 }

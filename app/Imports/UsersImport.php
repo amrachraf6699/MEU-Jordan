@@ -58,7 +58,7 @@ class UsersImport implements ToModel, WithHeadingRow
             'employee_number' => $row[self::EMPLOYEE_NUMBER_COLUMN],
             'role' => $row[self::ROLE_COLUMN],
             'username' => $row[self::USERNAME_COLUMN],
-            'password' => Hash::make($row[self::EMPLOYEE_NUMBER_COLUMN]), // Hashing the password
+            'password' => $row[self::EMPLOYEE_NUMBER_COLUMN],
         ]);
     }
 

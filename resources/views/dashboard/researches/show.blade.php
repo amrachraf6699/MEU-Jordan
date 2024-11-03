@@ -20,11 +20,19 @@
                     <p><strong>ترتيب المباحث:</strong> {{ $research->sort }}</p>
                     <p><strong>الفهرسة:</strong> {{ $research->indexing }}</p>
                     <p><strong>المصادر:</strong> {{ $research->sources }}</p>
-                    <p><strong>السنة الأكاديمية:</strong> {{ $research->academic_year }}</p>
+                    <p><strong>الأولوية البحثية:</strong> {{ $research->priority }}</p>
+                    @if($research->publication_link)
+                    <p><strong>رابط المنشور البحثي:</strong> <a href="{{ $research->publication_link }}" target="_blank" class="text-blue-600 hover:underline">{{ $research->publication_link }}</a></p>
+                    @endif
+
+                    @if(auth()->user()->role == 'admin' || auth()->user()->role == 'committee_member')
+                    <p><strong>تم فك الإعتماد بواسطة:</strong> {{ $research->revokedBy->full_name ?? 'لم يتم فك الإعتماد بعد' }}</p>
+                    @endif
                 </div>
 
                 <div class="bg-gray-100 p-4 rounded-lg shadow">
                     <h5 class="font-bold text-lg mb-2">تواريخ مهمة</h5>
+                    <p><strong>السنة الأكاديمية:</strong> {{ $research->academic_year }}</p>
                     <p><strong>تاريخ النشر:</strong> {{ $research->date_of_publication->format('Y-m-d') }}</p>
                     <p><strong> فترة التوثيق:</strong> {{ $research->documentaion_period }}</p>
                 </div>
@@ -33,8 +41,8 @@
             <!-- User Information -->
             <div class="bg-gray-100 p-4 rounded-lg shadow mb-8">
                 <h5 class="font-bold text-lg mb-2">تم التقديم بواسطة</h5>
-                <p><strong>الاسم:</strong> {{ $research->user->full_name }}</p>
-                <p><strong> اسم المستخدم:</strong> {{ $research->user->username }}</p>
+                <p><strong>الاسم:</strong> {{ $research->user->full_name ?? 'مستخدم محذوف'}}</p>
+                <p><strong> اسم المستخدم:</strong> {{ $research->user->username ?? 'مستخدم محذوف'}}</p>
             </div>
 
             <!-- Evidences Section -->

@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserActivity::class);
     }
+
+    public function revokedResearches()
+    {
+        return $this->hasMany(Research::class, 'revoked_by');
+    }
 }

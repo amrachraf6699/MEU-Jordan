@@ -12,10 +12,12 @@ use App\Models\DocumentaionPeriod;
 use App\Models\Hint;
 use App\Models\Indexing;
 use App\Models\Language;
+use App\Models\Priority;
 use App\Models\Program;
 use App\Models\Research;
 use App\Models\Status;
 use App\Models\Type;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
@@ -88,8 +90,9 @@ class ResearchesController extends Controller
         $indexings = Indexing::all();
         $documentaion_periods = DocumentaionPeriod::all();
         $academic_years = AcademicYear::all();
+        $priorities = Priority::all();
         $hints = Hint::first();
-        return view('dashboard.researches.create', compact('types', 'statuses', 'languages', 'indexings', 'documentaion_periods', 'academic_years', 'hints'));
+        return view('dashboard.researches.create', compact('types', 'statuses', 'languages', 'indexings', 'documentaion_periods', 'academic_years', 'hints', 'priorities'));
     }
 
 
@@ -109,6 +112,8 @@ class ResearchesController extends Controller
                 'documentaion_period' => $request->documentaion_period,
                 'academic_year' => $request->academic_year,
                 'status' => $request->status,
+                'priority' => $request->priority,
+                'publication_link' => $request->publication_link,
             ]
         );
 
@@ -121,7 +126,7 @@ class ResearchesController extends Controller
     {
         $this->authorize('view', $research);
 
-        $research->load('user');
+        $research->load('user', 'revokedBy');
 
         return view('dashboard.researches.show', compact('research'));
     }
@@ -137,9 +142,10 @@ class ResearchesController extends Controller
         $indexings = Indexing::all();
         $documentaion_periods = DocumentaionPeriod::all();
         $academic_years = AcademicYear::all();
+        $priorities = Priority::all();
         $hints = Hint::first();
 
-        return view('dashboard.researches.edit', compact('research', 'types', 'statuses', 'languages', 'indexings', 'documentaion_periods', 'academic_years', 'hints'));
+        return view('dashboard.researches.edit', compact('research', 'types', 'statuses', 'languages', 'indexings', 'documentaion_periods', 'academic_years', 'hints', 'priorities'));
     }
 
     public function update(CreateResearchRequest $request, Research $research)
@@ -159,6 +165,8 @@ class ResearchesController extends Controller
                 'sources' => $request->sources,
                 'documentaion_period' => $request->documentaion_period,
                 'academic_year' => $request->academic_year,
+                'priority' => $request->priority,
+                'publication_link' => $request->publication_link,
             ]
         );
 
@@ -278,11 +286,38 @@ class ResearchesController extends Controller
     {
         $this->authorize('revoke', $research);
 
-        $research->update(['accreditation_status' => 'معلق']);
+        $research->update([
+            'accreditation_status' => 'معلق',
+            'revoked_by' => auth()->id()
+        ]);
 
         $this->MakeActivity("قام بفك الإعتماد عن نتاج بحثي بعنوان {$research->title}", request());
 
         return back()->with('success', 'تم فك الإعتماد بنجاح');
+    }
+
+    public function assign(Research $research)
+    {
+        $this->authorize('assign', $research);
+
+        $users = User::where('id', '!=', auth()->id())->get();
+
+        return view('dashboard.researches.assign', compact('research', 'users'));
+    }
+
+    public function assignStore(Request $request, Research $research)
+    {
+        $this->authorize('assign', $research);
+
+        $request->validate((['user_id' => 'required|exists:users,id']));
+
+        $research->update(['user_id' => $request->user_id]);
+
+        $user = User::find($request->user_id);
+
+        $this->MakeActivity("قام بإسناد نتاج بحثي بعنوان {$research->title} للمستخدم {$user->full_name}", request());
+
+        return redirect()->route('dashboard.home')->with('success', 'تم الإسناد بنجاح');
     }
 
 

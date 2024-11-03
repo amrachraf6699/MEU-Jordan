@@ -34,6 +34,8 @@ class CreateResearchRequest extends FormRequest
             'sources' => 'required|string|max:255',
             'documentaion_period' => 'required|exists:documentaion_periods,value',
             'academic_year' => 'required|string|max:255|exists:academic_years,value',
+            'priority' => 'required|string|max:255|exists:priorities,value',
+            'publication_link' => 'nullable|url',
         ];
     }
 
@@ -80,6 +82,14 @@ class CreateResearchRequest extends FormRequest
             'status.string' => 'يجب أن تكون الحالة نصًا.',
             'status.max' => 'يجب ألا تتجاوز الحالة 255 حرفًا.',
             'status.exists' => 'يجب إدخال حالة صالحة',
+            'type.exists' => 'يجب إدخال نوع صالح',
+            'language.exists' => 'يجب إدخال لغة صالحة',
+            'indexing.exists' => 'يجب إدخال فهرسة صالحة',
+            'priority.required' => 'يجب إدخال الأولوية.',
+            'priority.string' => 'يجب أن تكون الأولوية نصًا.',
+            'priority.max' => 'يجب ألا تتجاوز الأولوية 255 حرفًا.',
+            'priority.exists' => 'يجب إدخال أولوية صالحة',
+            'publication_link.url' => 'يجب أن يكون رابط النشر رابطًا صحيحًا.',
         ];
     }
 }

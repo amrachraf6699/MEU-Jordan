@@ -24,6 +24,8 @@ return new class extends Migration
             $table->string('evidences')->nullable();
             $table->string('documentaion_period')->nullable();
             $table->string('academic_year')->nullable();
+            $table->string('priority')->nullable();
+            $table->string('publication_link')->nullable();
             $table->timestamps();
         });
     }

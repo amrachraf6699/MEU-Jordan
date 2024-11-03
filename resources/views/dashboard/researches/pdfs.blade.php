@@ -69,10 +69,15 @@
                 <th>المصادر</th>
                 <th>فترة التوثيق</th>
                 <th>السنة الأكاديمية</th>
+                <th>الأولويات البحثية</th>
+                <th>رابط المنشور البحثي</th>
                 <th>اسم المستخدم</th>
                 <th>الرقم الوظيفي</th>
                 <th>قسم المستخدم</th>
                 <th>برنامج المستخدم</th>
+                @if(auth()->user()->role == 'admin' || auth()->user()->role == 'committee_member')
+                    <th>تم فك الإعتماد بواسطة</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -90,10 +95,16 @@
                     <td class="english-text">{{ $research->sources }}</td>
                     <td>{{ $research->documentaion_period }}</td>
                     <td>{{ $research->academic_year }}</td>
+                    <td>{{ $research->priority }}</td>
+                    <td>{{ $research->publication_link }}</td>
                     <td>{{ $research->user->full_name ?? 'مستخدم محذوف' }}</td>
                     <td>{{ $research->user->employee_number ?? '-' }}</td>
                     <td>{{ $research->user->department->name ?? '-' }}</td>
                     <td>{{ $research->user->program->name ?? '-' }}</td>
+                    @if(auth()->user()->role == 'admin' || auth()->user()->role == 'committee_member')
+                        <td>{{ $research->revokedBy->full_name ?? 'لم يتم فك الإعتماد بعد' }}</td>
+                    @endif
+
                 </tr>
             @endforeach
         </tbody>

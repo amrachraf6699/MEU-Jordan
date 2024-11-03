@@ -7,6 +7,7 @@ use App\Models\DocumentaionPeriod;
 use App\Models\Hint;
 use App\Models\Indexing;
 use App\Models\Language;
+use App\Models\Priority;
 use App\Models\Status;
 use App\Models\Type;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ class AdoptResearchController extends Controller
         'indexing' => 'indexings',
         'DocumentaionPeriod' => 'documentaion_periods',
         'AcademicYear' => 'academic_years',
+        'Priority' => 'priorities',
     ];
 
     public function index()
@@ -31,8 +33,9 @@ class AdoptResearchController extends Controller
         $documentaion_periods = DocumentaionPeriod::all();
         $academic_years = AcademicYear::all();
         $hints = Hint::first();
+        $priorities = Priority::all();
 
-        return view('dashboard.adopt-research.index', compact('types', 'statuses', 'languages', 'indexings', 'documentaion_periods', 'academic_years', 'hints'));
+        return view('dashboard.adopt-research.index', compact('types', 'statuses', 'languages', 'indexings', 'documentaion_periods', 'academic_years', 'hints', 'priorities'));
     }
 
     public function store(Request $request, $model)
@@ -105,6 +108,8 @@ class AdoptResearchController extends Controller
             'evidences' => 'nullable|string|max:255',
             'documentaion_period' => 'nullable|string|max:255',
             'academic_year' => 'nullable|string|max:255',
+            'priority' => 'nullable|string|max:255',
+            'publication_link' => 'nullable|string|max:255',
         ], [
             'title.max' => 'الحد الأقصى لعنوان النتاج البحثي هو 255 حرف.',
             'type.max' => 'الحد الأقصى لنوع النتاج البحثي هو 255 حرف.',
@@ -117,6 +122,8 @@ class AdoptResearchController extends Controller
             'evidences.max' => 'الحد الأقصى لتحميل الشواهد هو 255 حرف.',
             'documentaion_period.max' => 'الحد الأقصى لفترة التوثيق هو 255 حرف.',
             'academic_year.max' => 'الحد الأقصى للعام الأكاديمي هو 255 حرف.',
+            'priority.max' => 'الحد الأقصى لأولوية النشر هو 255 حرف.',
+            'publication_link.max' => 'الحد الأقصى لرابط النشر هو 255 حرف.',
         ]);
 
         $hints = Hint::first();

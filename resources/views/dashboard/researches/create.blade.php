@@ -159,6 +159,31 @@
                         @enderror
                     </div>
 
+                    <!-- Proirities (Dropdown) -->
+                    <div class="form-group">
+                        <label for="priority">الأولويات البحثية</label>
+                        <select name="priority" id="priority" class="form-control" required>
+                            <option value="">اختر الأولوية البحثية</option>
+                            @foreach($priorities as $priority)
+                                <option value="{{ $priority->value }}" {{ old('priority') == $priority->value ? 'selected' : '' }}>{{ $priority->value }}</option>
+                            @endforeach
+                        </select>
+                        <small class="form-text text-muted">{{ $hints->priorities }}</small>
+                        @error('priorities')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <!-- Puplication Link -->
+                    <div class="form-group">
+                        <label for="publication_link">رابط المنشور البحثي</label>
+                        <input type="text" name="publication_link" id="publication_link" class="form-control" value="{{ old('publication_link') }}" placeholder="أدخل رابط النشر">
+                        <small class="form-text text-muted">{{ $hints->publication_link }}</small>
+                        @error('publication_link')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+
                     <!-- Submit Button -->
                     <button type="submit" class="btn btn-primary">إضافة نتاج بحثي جديد</button>
                 </form>

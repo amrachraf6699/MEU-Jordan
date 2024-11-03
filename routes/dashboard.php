@@ -74,6 +74,8 @@ Route::group(['prefix' => 'researches' , 'as' => 'researches.', 'controller' => 
     Route::get('{research}/edit', 'edit')->name('edit');
     Route::put('{research}/edit', 'update')->name('update');
     Route::delete('{research}/delete', 'destroy')->name('destroy');
+    Route::get('{research}/assign', 'assign')->name('assign');
+    Route::post('{research}/assign', 'assignStore')->name('assignStore');
     Route::get('researches/{research}/export', 'export')->name('export');
     Route::get('exportall', 'exportall')->name('exportall');
 
@@ -102,6 +104,9 @@ Route::group(['prefix' => 'adopt', 'as' => 'adopt.', 'controller' => AdoptResear
 
     Route::post('academic_years', 'store')->name('academic_years')->defaults('model', 'AcademicYear');
     Route::delete('academic_years/{id}', 'delete')->name('deleteAcademicYear')->defaults('model', 'AcademicYear');
+
+    Route::post('priorities', 'store')->name('priorities')->defaults('model', 'Priority');
+    Route::delete('priorities/{id}', 'delete')->name('deletePriority')->defaults('model', 'Priority');
 });
 
 Route::get('users-activities' , [ProfileController::class , 'usersActivities'])->name('users-activities');

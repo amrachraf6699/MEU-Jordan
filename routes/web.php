@@ -29,6 +29,3 @@ Route::group(['prefix' => 'auth' , 'middleware' => 'guest', 'controller' => Auth
     Route::get('reset', 'resetForm')->name('resetForm');
     Route::post('reset', 'update')->name('update');
 });
-
-
-

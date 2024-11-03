@@ -240,6 +240,12 @@
                                                 PDF
                                             </a>
                                         @endif
+                                        @if(auth()->user()->role == 'admin' && $research->user_id == null)
+                                        |
+                                            <a href="{{ route('dashboard.researches.assign', $research) }}" class="text-primary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                                                إسناد
+                                            </a>
+                                        @endif
 
                                 </td>
                             </tr>

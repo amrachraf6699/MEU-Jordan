@@ -50,7 +50,7 @@ class UsersController extends Controller
             $query->where('role', $request->role);
         }
 
-        $users = $query->where('id', '!=', auth()->id())->latest()->with(['department' , 'program'])->withCount('researches')->get();
+        $users = $query->where('id', '!=', auth()->id())->latest()->with(['department' , 'program'])->withCount('researches')->paginate(10);
 
         return view('dashboard.users.index', compact('users', 'departments', 'programs'));
     }

@@ -56,13 +56,14 @@ class ProfileController extends Controller
 
     public function logout()
     {
+        $this->MakeActivity('قام بتسجيل الخروج' , request());
         auth()->logout();
         return redirect()->route('login');
     }
 
     public function activities()
     {
-        $activities = auth()->user()->activities()->paginate(10);
+        $activities = auth()->user()->activities()->latest()->paginate(10);
 
         return view('dashboard.activities' , compact('activities'));
     }
@@ -83,7 +84,7 @@ class ProfileController extends Controller
             $query->whereBetween('created_at' , [$request->from_date , $request->to_date]);
         }
 
-        $activities = $query->paginate(10);
+        $activities = $query->latest()->paginate(10);
 
 
         $users = User::all();
