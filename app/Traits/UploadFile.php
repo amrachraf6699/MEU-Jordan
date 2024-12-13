@@ -10,7 +10,7 @@ trait UploadFile
     {
         $fileName = \Str::uuid() . '.' . $file->getClientOriginalExtension();
 
-        $file->storeAs('uploads', $fileName, 'public_uploads');
+        $file->storeAs('uploads', $fileName, 'public');
 
         return 'uploads/'.$fileName;
     }

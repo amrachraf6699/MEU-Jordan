@@ -186,8 +186,8 @@
                                 <option value="{{ $priority->value }}" {{ old('priority', $research->priority) == $priority->value ? 'selected' : '' }}>{{ $priority->value }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">{{ $hints->priorities }}</small>
-                        @error('priorities')
+                        <small class="form-text text-muted">{{ $hints->priority ?? '' }}</small>
+                        @error('priority')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -196,7 +196,7 @@
                     <div class="form-group">
                         <label for="publication_link">رابط المنشور البحثي</label>
                         <input type="text" name="publication_link" id="publication_link" class="form-control" value="{{ old('publication_link', $research->publication_link) }}" placeholder="أدخل رابط المنشور البحثي">
-                        <small class="form-text text-muted">{{ $hints->publication_link }}</small>
+                        <small class="form-text text-muted">{{ $hints->publication_link ?? '' }}</small>
                         @error('publication_link')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror

@@ -19,7 +19,7 @@
                     <div class="form-group">
                         <label for="title">عنوان النتاج البحثي</label>
                         <input type="text" name="title" id="title" class="form-control" value="{{ old('title') }}" placeholder="أدخل عنوان النتاج البحثي" required>
-                        <small class="form-text text-muted">{{ $hints->title }}</small>
+                        <small class="form-text text-muted">{{ $hints->title ?? '' }}</small>
                         @error('title')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -34,7 +34,7 @@
                                 <option value="{{ $type->value }}" {{ old('type') == $type->value ? 'selected' : '' }}>{{ $type->value }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">{{ $hints->type }}</small>
+                        <small class="form-text text-muted">{{ $hints->type ?? '' }}</small>
                         @error('type')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -49,7 +49,7 @@
                                 <option value="{{ $status->value }}" {{ old('status') == $status->value ? 'selected' : '' }}>{{ $status->value }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">{{ $hints->status }}</small>
+                        <small class="form-text text-muted">{{ $hints->status ?? '' }}</small>
                         @error('status')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -64,7 +64,7 @@
                                 <option value="{{ $language->value }}" {{ old('language') == $language->value ? 'selected' : '' }}>{{ $language->value }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">{{ $hints->language }}</small>
+                        <small class="form-text text-muted">{{ $hints->language ?? '' }}</small>
                         @error('language')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -74,7 +74,7 @@
                     <div class="form-group">
                         <label for="date_of_publication">تاريخ النشر</label>
                         <input type="date" name="date_of_publication" id="date_of_publication" class="form-control" value="{{ old('date_of_publication') }}" required>
-                        <small class="form-text text-muted">{{ $hints->date_of_publication }}</small>
+                        <small class="form-text text-muted">{{ $hints->date_of_publication ?? '' }}</small>
                         @error('date_of_publication')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -89,7 +89,7 @@
                                 <option value="{{ $sortOption }}" {{ old('sort') == $sortOption ? 'selected' : '' }}>{{ $sortOption }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">{{ $hints->sort }}</small>
+                        <small class="form-text text-muted">{{ $hints->sort ?? '' }}</small>
                         @error('sort')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -99,7 +99,7 @@
                     <div class="form-group">
                         <label for="sources">مصدر النتاج البحثي</label>
                         <input type="text" name="sources" id="sources" class="form-control" value="{{ old('sources') }}" placeholder="أدخل مصدر النتاج البحثي" required>
-                        <small class="form-text text-muted">{{ $hints->sources }}</small>
+                        <small class="form-text text-muted">{{ $hints->sources ?? '' }}</small>
                         @error('sources')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -113,7 +113,7 @@
                                 <option value="{{ $indexing->value }}" {{ old('indexing') == $indexing->value ? 'selected' : '' }}>{{ $indexing->value }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">{{ $hints->indexing }}</small>
+                        <small class="form-text text-muted">{{ $hints->indexing ?? '' }}</small>
                         @error('indexing')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -123,7 +123,7 @@
                     <div class="form-group">
                         <label for="evidences">تحميل الشواهد</label>
                         <input type="file" name="evidences" id="evidences" class="form-control" multiple>
-                        <small class="form-text text-muted">{{ $hints->evidences }}</small>
+                        <small class="form-text text-muted">{{ $hints->evidences ?? '' }}</small>
                         @error('evidences')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -138,7 +138,7 @@
                                 <option value="{{ $period->value }}" {{ old('documentaion_period') == $period->value ? 'selected' : '' }}>{{ $period->value }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">{{ $hints->documentaion_period }}</small>
+                        <small class="form-text text-muted">{{ $hints->documentaion_period ?? '' }}</small>
                         @error('documentaion_period')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -153,7 +153,7 @@
                                 <option value="{{ $academic_year->value }}" {{ old('academic_year') == $academic_year->value ? 'selected' : '' }}>{{ $academic_year->value }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">{{ $hints->academic_year }}</small>
+                        <small class="form-text text-muted">{{ $hints->academic_year ?? '' }}</small>
                         @error('academic_year')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -168,7 +168,7 @@
                                 <option value="{{ $priority->value }}" {{ old('priority') == $priority->value ? 'selected' : '' }}>{{ $priority->value }}</option>
                             @endforeach
                         </select>
-                        <small class="form-text text-muted">{{ $hints->priorities }}</small>
+                        <small class="form-text text-muted">{{ $hints->priorities ?? '' }}</small>
                         @error('priorities')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -178,7 +178,7 @@
                     <div class="form-group">
                         <label for="publication_link">رابط المنشور البحثي</label>
                         <input type="text" name="publication_link" id="publication_link" class="form-control" value="{{ old('publication_link') }}" placeholder="أدخل رابط النشر">
-                        <small class="form-text text-muted">{{ $hints->publication_link }}</small>
+                        <small class="form-text text-muted">{{ $hints->publication_link ?? '' }}</small>
                         @error('publication_link')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror

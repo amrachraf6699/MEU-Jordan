@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Importing Cairo font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
@@ -17,9 +19,9 @@
 
 <body class="bg-gray-50 flex flex-col min-h-screen">
     <!-- Header -->
-    <header class="relative p-4 bg-white shadow-lg flex items-center justify-center">
+    <header class="relative p-8 bg-white shadow-lg flex items-center justify-center">
         <!-- Left Image -->
-        <img src="{{ asset('logo.svg') }}" alt="Logo 1" class="hidden md:block absolute left-4 h-10">
+        <img src="{{ asset('logo.png') }}" alt="Logo 1" class="hidden md:block absolute left-4 h-10">
 
         <!-- Centered Text -->
         <div class="text-center">

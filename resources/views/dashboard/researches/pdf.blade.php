@@ -48,7 +48,7 @@
 <body>
 
     <htmlpageheader name="page-header">
-        <img src="{{ public_path('logo.svg') }}" alt="Logo" style="width: 100px; height: auto;">
+        <img src="{{ public_path('logo.png') }}" alt="Logo" style="width: 100px; height: auto;">
     </htmlpageheader>
 
     <htmlpagefooter name="page-footer">

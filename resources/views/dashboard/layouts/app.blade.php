@@ -5,8 +5,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('logo.svg') }}">
-  <link rel="icon" type="image/png" href="{{ asset('logo.svg') }}">
+  <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('logo.png') }}">
+  <link rel="icon" type="image/png" href="{{ asset('logo.png') }}">
   <title>
     جامعة الشرق الأوسط - كلية الآداب و العلوم التربوية | @yield('title')
   </title>
